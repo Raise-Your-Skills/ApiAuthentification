@@ -1,3 +1,4 @@
+// Animation formulaire Login/Signup
 $(".log-in").click(function(){
 	$(".signIn").addClass("active-dx");
 	$(".signUp").addClass("inactive-sx");
