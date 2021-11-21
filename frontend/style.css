@@ -1,4 +1,15 @@
 @import 'https://fonts.googleapis.com/css?family=Dosis|Roboto:300,400';
+
+
+/* *** Reset *********************************************************** *** */
+*, ::before, ::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* *** Global ********************************************************** *** */
 :root {
 	--background: #a1fa8f;
 	--color: #367e42;
@@ -7,16 +18,15 @@
 	--input: #95fd33;
 }
 
-* {
-	margin: 0;
-	padding: 0;
-}
-
 body {
 	background: var(--background);
 }
 
-.container{
+
+
+/* *** Sign ************************************************************ *** */
+#sign {
+	display: none;
 	position:absolute;
 	width: auto;
 	height:auto;
@@ -24,7 +34,7 @@ body {
 	left: calc(50% - 160px);
 }
 
-form {
+#sign form {
 	position: absolute;
 	text-align: center;
 	background: #fff;
@@ -36,7 +46,7 @@ form {
 	box-sizing: border-box;
 }
 
-p {
+#sign p {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 100;
 	text-transform: uppercase;
@@ -45,14 +55,14 @@ p {
 	margin-bottom: 40px;
 }
 
-p > span {
+#sign p > span {
 	padding-top: 3px;
 	display: block;
 	font-weight: 400;
 	font-size: 9px;
 }
 
-h3 {
+#sign h3 {
 	font-family: 'Dosis';
 	font-size: 35px;
 	text-transform: uppercase;
@@ -65,10 +75,10 @@ button{
 	outline: none !important;
 }
 
-button.fb {
+#sign button.fb {
 	border: none;
 	background: #3b5998;
-	width: 160px;
+	width: 250px;
 	height: 25px;
 	font-family: 'Roboto', sans-serif;
 	font-size: 12px;
@@ -80,12 +90,12 @@ button.fb {
 	margin-bottom: 20px;
 	transition:all 0.3s linear;
 }
-button.fb:hover {
+#sign button.fb:hover {
 	background: #fff;
 	color: #3b5998;
 }
 
-button.form-btn {
+#sign button.form-btn {
 	position: absolute;
 	width: 50%;
 	height: 60px;
@@ -97,7 +107,7 @@ button.form-btn {
 	cursor: pointer;
 }
 
-button.form-btn.sx {
+#sign button.form-btn.sx {
 	left: 0;
 	border-radius: 0 0 0 5px;
 	background-color: rgba(var(--btn-sx), 0.35);
@@ -105,28 +115,28 @@ button.form-btn.sx {
 	transition:all 0.3s linear;
 }
 
-button.form-btn.sx:hover {
+#sign button.form-btn.sx:hover {
 	background-color:rgba(var(--btn-sx), 0.65);
 	color: #fff;
 }
 
-button.form-btn.sx.back {
+#sign button.form-btn.sx.back {
 	background-color: rgba(0, 0, 0, 0.15);
 	transition:all 0.3s linear;
 }
 
-button.form-btn.sx.back:hover {
+#sign button.form-btn.sx.back:hover {
 	background-color: rgba(0, 0, 0, 0.35);
 }
 
-button.form-btn.dx {
+#sign button.form-btn.dx {
 	right: 0;
 	border-radius: 0 0 5px 0;
 	background-color: var(--btn-dx);
 	color: #fff;
 }
 
-input {
+input, textarea {
 	border: none;
 	border-bottom: 1px solid var(--input);
 	width: 85%;
@@ -139,30 +149,30 @@ input {
 }
 
 ::-webkit-input-placeholder {
-   color: var(--input);
+  color: var(--input);
 	font-family: 'Roboto';
 	font-weight:100;
 }
 
 :-moz-placeholder {
-   color: var(--input);
+  color: var(--input);
 	font-family: 'Roboto';
 	font-weight:100;
 }
 
 ::-moz-placeholder {
-   color: var(--input);
+  color: var(--input);
 	font-family: 'Roboto';
 	font-weight:100;
 }
 
 :-ms-input-placeholder {
-   color: var(--input);
+  color: var(--input);
 	font-family: 'Roboto';
 	font-weight:100;
 }
 
-input { width: 100% }
+input, textarea { width: 100% }
 
 .signIn{
 	z-index: 1;
@@ -260,4 +270,88 @@ input { width: 100% }
 		transform: perspective(100px) translate3d(0px, 0px, 0px);
 		opacity: 1;
 	}
+}
+
+
+/* *** Account ********************************************************* *** */
+#account {
+	/* display: none; */
+  display: flex;
+  justify-content: center;
+}
+
+#account img {
+	width: 100%;
+	height: 100%
+}
+
+#addForm {
+  display: flex;
+  flex-wrap: wrap;
+	width: 80%;
+  margin: 3rem 0;
+	padding: 1rem 3rem;
+	background: #d1fccc;
+	border-radius: 15px;
+	border: 1px solid #ceeecf;
+}
+
+#addForm .col-6, .col-12 {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+#account #addForm .col-6 { width: 50% }
+#account #addForm .col-12 { width: 100% }
+
+#account #addForm input {
+  height: 2rem;
+  margin: 0.3rem 0;
+}
+
+#account #img-preview {
+  margin: 10px auto;
+}
+
+#account [type="file"] {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+#addForm label {
+  background: #5fca4a;
+  font-size: 0.9rem;
+  padding: 10px;
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#addForm input[type="submit"] {
+  background: #5fca4a;
+  font-size: 1rem;
+	vertical-align: middle;
+  height: 3rem;
+  text-align: center;
+  margin: 0;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#addForm input[type="submit"]:hover, #addForm label:hover { background: #008800 }
+
+#addForm input, textarea {
+	text-align: left;
+	padding-left: 10px;
+	color: #5fca4a;
 }
