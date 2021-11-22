@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr" >
+<head>
+  <meta charset="UTF-8">
+  <title>Frontend pour API Authentification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div id="message"></div>
+
+	<div id="sign">
+		<form id="signUp" class="signUp" method="post">
+			<h3>Créer votre compte</h3>
+			<p>Entrez simplement votre adresse e-mail et votre mot de passe.</p>
+			<input type="email" name="email" id="email" placeholder="Entrer votre eMail" required />
+			<input type="password" name="password" id="password" placeholder="Entrer votre mot de passe" required />
+			<!-- <input type="password" placeholder="Verifier votre Mot de passe" required /> -->
+			<button class="form-btn sx log-in" type="button" title="Connexion">Se connecter</button>
+			<button class="form-btn dx" type="submit" title="Inscription">S'inscrire</button>
+		</form>
+		<form id="signIn" class="signIn" method="post">
+			<h3>Content de vous revoir !</h3>
+			<button class="fb" type="button">Se connecter avec Facebook</button>
+			<p>- ou -</p>
+			<input type="email" name="email" id="email" placeholder="Entrer votre eMail" required />
+			<input type="password" name="password" id="password" placeholder="Entrer votre mot de passe" required />
+			<button class="form-btn sx back" type="button" title="Retour">Retour</button>
+			<button class="form-btn dx" type="submit" title="Connexion">Se connecter</button>
+		</form>
+	</div>
+
+	<div id="account">
+		<form id="accountForm" method="post">
+			<div id="menu">
+				<h2>Profil</h2>
+				<div>
+					<button class="btn" id="btnDelete">Supprimer</button>
+					<button class="btn" id="btnExit">Exit</button>
+				</div>
+			</div>
+			<div class="col-12">
+				<p id="msg"></p>
+			</div>
+			<div class="col-6">
+				<div id="img-preview"><img id="avatar" src="/images/avatar_default.jpg" /></div>
+				<label for="avatar">Choisissez votre Avatar</label>
+				<input type="file" accept="image/*" name="avatar" id="avatar">
+			</div>
+			<div class="col-6">
+				<input type="text" name="first_name" id="first_name" placeholder="Prénom" required>
+				<input type="text" name="last_name" id="last_name" placeholder="Nom" required>
+				<input type="email" name="email" id="email" placeholder="E-Mail" required>
+				<textarea name="bio" id="bio" cols="30" rows="10" placeholder="Bio"></textarea>
+				<input type="submit" onClick="sendForm()" value="Enregistrer">
+			</div>
+		</form>
+	</div>
+
+	<script src="index.js"></script>
+</body>
+</html>
