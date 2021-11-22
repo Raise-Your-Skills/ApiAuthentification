@@ -332,6 +332,7 @@ input, textarea { width: 100% }
 
 #img-preview {
   margin: 10px auto;
+	height: 60vh;
 }
 
 #account [type="file"] {
@@ -381,15 +382,15 @@ input, textarea { width: 100% }
 
 }
 
-#btnExit {
+.btn {
 	color: #ffffff;
 	background:#95e65f;
 	border: none;
-	padding: 5px;
+	padding: 5px 10px;
 	border-radius: 10px;
 }
 
-#btnExit:hover {
+.btn:hover {
 	background: #008800;
 }
 

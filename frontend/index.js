@@ -14,19 +14,6 @@ document.querySelector(".back").addEventListener('click', () => {
 })
 
 
-// Selection page
-function isAuth() {
-  if (localStorage.getItem('token')) {
-    document.getElementById('sign').style.display = 'none'
-    document.getElementById('account').style.display = 'flex'
-  } else {
-    document.getElementById('sign').style.display = 'flex'
-    document.getElementById('account').style.display = 'none'
-  }
-}
-isAuth()
-
-
 //
 // Config
 //
@@ -34,6 +21,23 @@ isAuth()
 const apiUrl = 'http://localhost:5000'
 console.log('--> URL API')
 console.log(apiUrl)
+
+
+//
+// Selection page
+//
+function isAuth() {
+  if (localStorage.getItem('token')) {
+    document.getElementById('sign').style.display = 'none'
+    document.getElementById('account').style.display = 'flex'
+    updateUser()
+  } else {
+    document.getElementById('sign').style.display = 'flex'
+    document.getElementById('account').style.display = 'none'
+  }
+}
+isAuth()
+
 
 //
 // Functions
@@ -56,35 +60,25 @@ function avatarPreview () {
 }
 
 // Update
-function updateUser (userId) {
-  const user = {
-    "id": userId,
-    "email": document.querySelector(`#id-${userId} .email`).innerText,
-    "first_name": document.querySelector(`#id-${userId} .firstName`).innerText,
-    "last_name": document.querySelector(`#id-${userId} .lastName`).innerText,
-    "avatar": document.querySelector(`#id-${userId} .avatar img`).src
-  }
+function updateUser () {
+  const userId = localStorage.getItem('userId')
+  const token = localStorage.getItem('token')
 
-  container.style = 'display: flex'
-  container.innerHTML = formTpl(user)
-  avatarPreview()
-  responseContainer.innerHTML = '<pre>Enregistrer un « User » pour avoir une « Response ».</pre>'
-  addUser.innerHTML = '<i class="fas fa-times"></i>'
-  addUser.classList.toggle('active')
-}
-
-// Delete
-function deleteUser (userId) {
-  // console.log(`${apiUrl}/api/users/${userId}`)
-  fetch(`${apiUrl}/api/users/${userId}`, { method: 'DELETE' })
-  .then(response => {
-    let del = ''
-    if(response.ok){
-      document.getElementById(`id-${userId}`).style.display = 'none'
-      del = `, User #${userId} exterminate !`
+  fetch(`${apiUrl}/api/users/${userId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     }
-    document.getElementById('responseContainer')
-            .insertAdjacentHTML('afterbegin', `<pre>Status: ${response.status}${del}</pre>`)
+  })
+  .then(response => {
+    console.log(`Status: ${response.status}`)
+    if(response.ok) {
+      response.json().then(data => {
+        document.getElementById("accountForm").email.value = data.email
+        document.getElementById("avatar").src = data.avatarUrl
+      })
+    }
   })
 }
 
@@ -173,6 +167,8 @@ signIn.addEventListener('submit', e => {
     console.log(`Status: ${response.status}`)
     if(response.ok){
       response.json().then(data => {
+        // console.log(data)
+        localStorage.setItem('userId', data.userId)
         localStorage.setItem('token', data.token)
         isAuth()
       })
@@ -189,5 +185,30 @@ signIn.addEventListener('submit', e => {
 const btnExit = document.getElementById("btnExit")
 btnExit.addEventListener('click', e => {
   localStorage.removeItem('token')
+  localStorage.removeItem('userId')
   isAuth()
+})
+
+// Delete
+const btnDelete = document.getElementById("btnDelete")
+btnDelete.addEventListener('click', e => {
+  const userId = localStorage.getItem('userId')
+  const token = localStorage.getItem('token')
+  
+  fetch(`${apiUrl}/api/users/${userId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(response => {
+    console.log(`Status: ${response.status}`)
+    if (response.ok) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
+      console.log('Utilisateur éffacé');
+      isAuth()
+    }
+  })
 })
