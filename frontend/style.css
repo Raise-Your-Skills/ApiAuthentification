@@ -305,7 +305,7 @@ input, textarea { width: 100% }
 	height: 100%
 }
 
-#addForm {
+#accountForm {
   display: flex;
   flex-wrap: wrap;
 	width: 80%;
@@ -316,21 +316,21 @@ input, textarea { width: 100% }
 	border: 1px solid #ceeecf;
 }
 
-#addForm .col-6, .col-12 {
+#accountForm .col-6, .col-12 {
   display: flex;
   flex-direction: column;
   margin: auto;
 }
 
-#account #addForm .col-6 { width: 50% }
-#account #addForm .col-12 { width: 100% }
+#accountForm .col-6 { width: 50% }
+#accountForm .col-12 { width: 100% }
 
-#account #addForm input {
+#accountForm input {
   height: 2rem;
   margin: 0.3rem 0;
 }
 
-#account #img-preview {
+#img-preview {
   margin: 10px auto;
 }
 
@@ -340,7 +340,7 @@ input, textarea { width: 100% }
   overflow: hidden;
 }
 
-#addForm label {
+#accountForm label {
   background: #5fca4a;
   font-size: 0.9rem;
   padding: 10px;
@@ -354,7 +354,7 @@ input, textarea { width: 100% }
   transition: all 0.2s;
 }
 
-#addForm input[type="submit"] {
+#accountForm input[type="submit"] {
   background: #5fca4a;
   font-size: 1rem;
 	vertical-align: middle;
@@ -368,10 +368,34 @@ input, textarea { width: 100% }
   transition: all 0.2s;
 }
 
-#addForm input[type="submit"]:hover, #addForm label:hover { background: #008800 }
+#accountForm input[type="submit"]:hover, #accountForm label:hover { background: #008800 }
 
-#addForm input, textarea {
+#accountForm input, textarea {
 	text-align: left;
 	padding-left: 10px;
 	color: #5fca4a;
+}
+
+#accountForm h2 {
+	color: #5fca4a;
+
+}
+
+#btnExit {
+	color: #ffffff;
+	background:#95e65f;
+	border: none;
+	padding: 5px;
+	border-radius: 10px;
+}
+
+#btnExit:hover {
+	background: #008800;
+}
+
+#menu {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin: 1rem 0;
 }
