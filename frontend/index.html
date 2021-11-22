@@ -7,21 +7,22 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+	<div id="message"></div>
 	<div id="sign">
-		<form class="signUp">
+		<form id="signUp" class="signUp" method="post">
 			<h3>Créer votre compte</h3>
 			<p>Entrez simplement votre adresse e-mail et votre mot de passe.</p>
-			<input type="email" placeholder="Entrer votre eMail" required autocomplete='off' />
-			<input type="password" placeholder="Entrer votre Mot de passe" required />
-			<input type="password" placeholder="Verifier votre Mot de passe" required />
+			<input type="email" name="email" id="email" placeholder="Entrer votre eMail" required />
+			<input type="password" name="password" id="password"placeholder="Entrer votre Mot de passe" required />
+			<!-- <input type="password" placeholder="Verifier votre Mot de passe" required /> -->
 			<button class="form-btn sx log-in" type="button" title="Connexion">Se connecter</button>
 			<button class="form-btn dx" type="submit" title="Inscription">S'inscrire</button>
 		</form>
-		<form class="signIn">
+		<form id="signIn" class="signIn" method="post">
 			<h3>Content de vous revoir !</h3>
 			<button class="fb" type="button">Se connecter avec Facebook</button>
 			<p>- ou -</p>
-			<input type="email" placeholder="Entrer votre eMail" autocomplete='off' required />
+			<input type="email" placeholder="Entrer votre eMail" required />
 			<input type="password" placeholder="Entrer votre Mot de passe" required />
 			<button class="form-btn sx back" type="button" title="Retour">Retour</button>
 			<button class="form-btn dx" type="submit" title="Connexion">Se connecter</button>
