@@ -18,8 +18,8 @@ document.querySelector(".back").addEventListener('click', () => {
 // Config
 //
 
-const apiUrl = 'http://localhost:5000'
-// const apiUrl = 'https://bastienrc-apiauth.herokuapp.com'
+// const apiUrl = 'http://localhost:5000'
+const apiUrl = 'https://bastienrc-apiauth.herokuapp.com'
 console.log('--> URL API')
 console.log(apiUrl)
 

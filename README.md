@@ -1,10 +1,10 @@
 # ApiAuthentification
 
-Api d'Authentification développer pour l'organisation **« Raise Your Skills »** par la team des **Murigawa**.
+Api d'Authentification développer pour l'organisation **« [Raise Your Skills](https://github.com/Raise-Your-Skills) »** par la team des **[Murigawa](https://github.com/orgs/Raise-Your-Skills/teams/murigawa)**.
 
 Plus de détails sur le [Brief](/Brief.md).
 
-Une demo est visible à l'adresse : https://raise-your-skills.github.io/ApiAuthentification/frontend
+Demo : [Frontend pour l'API d'Authentification](https://raise-your-skills.github.io/ApiAuthentification/frontend)
 
 ## Collaboration
 
