@@ -31,6 +31,7 @@ function isAuth() {
   if (localStorage.getItem('token')) {
     document.getElementById('sign').style.display = 'none'
     document.getElementById('account').style.display = 'flex'
+    account()
   } else {
     document.getElementById('sign').style.display = 'flex'
     document.getElementById('account').style.display = 'none'
@@ -57,6 +58,57 @@ function avatarPreview () {
       })
     }
   })
+}
+
+// Account
+function account () {
+  const userId = localStorage.getItem('userId')
+  const token = localStorage.getItem('token')
+
+  fetch(`${apiUrl}/api/users/${userId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(response => {
+    console.log(`Status: ${response.status}`)
+    if(response.ok) {
+      response.json().then(data => accountReadProfil(data))
+    }
+  })
+}
+
+function accountReadProfil (objUser) {
+  console.log(objUser)
+  const avatar = objUser.avatarUrl ? objUser.avatarUrl : "avatar_default.jpg"
+  const firstname = objUser.firstname ? objUser.firstname : "No Firstname"
+  const lastname = objUser.lastname ? objUser.lastname : "No Lastname"
+  const email = objUser.email ? objUser.email : 'No Email'
+  const bio = objUser.bio ? objUser.bio : "No Bio"
+
+  document.getElementById('accountRead').innerHTML = `
+    <div class="col-6">
+      <div id="img-preview">
+        <img id="avatar" src="./images/${avatar}" />
+      </div>
+    </div>
+    <div class="col-6">
+      <div id="info" >
+        <p><span>Prénom : </span>${firstname}</p>
+        <p><span>Nom : </span>${lastname}</p>
+        <p><span>Email : </span>${email}</p>
+        <p><span>Bio : </span>${bio}</p>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div style="font-size:0.6rem;text-align:center;margin:1px;color:#999">
+        <p>ID:${objUser._id} ~ C:${objUser.createdAt} ~ U:${objUser.updatedAt}</p>
+      </div>
+    </div>
+  `
 }
 
 
@@ -109,10 +161,10 @@ signUp.addEventListener('submit', (e) => {
       })
     } else {
       response.json().then(data => {
-        document.getElementById('message').innerHTML = `<p class="bad">${data.error}</p>`
-        console.log(data.error.errors)
-        if (data.error.errors) {
+        if (data.error.keyPattern) {
           document.getElementById('message').innerHTML = `<p class="bad">Cette adresse email existe déjà !</p>`
+        } else if (data.error) {
+          document.getElementById('message').innerHTML = `<p class="bad">${data.error}</p>`
         }
       })
     }
@@ -171,7 +223,7 @@ const btnDelete = document.getElementById("btnDelete")
 btnDelete.addEventListener('click', e => {
   const userId = localStorage.getItem('userId')
   const token = localStorage.getItem('token')
-  
+
   fetch(`${apiUrl}/api/users/${userId}`, {
     method: 'DELETE',
     headers: {
@@ -188,6 +240,12 @@ btnDelete.addEventListener('click', e => {
       isAuth()
     }
   })
+})
+
+// Edit
+const btnEdit = document.getElementById("btnEdit")
+btnEdit.addEventListener('click', e => {
+  document.getElementById('accountEdit').innerHTML = accountEditProfil()
 })
 
 // Update
