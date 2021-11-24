@@ -21,7 +21,7 @@
 		</form>
 		<form id="signIn" class="signIn" method="post">
 			<h3>Content de vous revoir !</h3>
-			<button class="fb" type="button">Se connecter avec Facebook</button>
+			<button class="fb" type="button" title="In progress ...">Se connecter avec Facebook</button>
 			<p>- ou -</p>
 			<input type="email" name="email" id="email" placeholder="Entrer votre eMail" required />
 			<input type="password" name="password" id="password" placeholder="Entrer votre mot de passe" required />
@@ -30,31 +30,43 @@
 		</form>
 	</div>
 
-	<div id="account">
-		<form id="accountForm" method="post">
+	<div id="accountContainer">
+		<div id="account">
 			<div id="menu">
 				<h2>Profil</h2>
 				<div>
+					<button class="btn" id="btnEdit">Edit</button>
 					<button class="btn" id="btnDelete">Supprimer</button>
 					<button class="btn" id="btnExit">Exit</button>
 				</div>
 			</div>
+
 			<div class="col-12">
 				<p id="msg"></p>
-			</div><!--
-			 <div class="col-6">
-				 <div id="img-preview"><img id="avatar" src="/images/avatar_default.jpg" /></div>
-				 <label for="avatar">Choisissez votre Avatar</label>
-				 <input type="file" accept="image/*" name="avatar" id="avatar">
-			 </div> -->
-			<div class="col-6">
-				<input type="text" name="firstname" id="firstname" placeholder="Prénom" required>
-				<input type="text" name="lastname" id="lastname" placeholder="Nom" required>
-				<input type="email" name="email" id="email" placeholder="E-Mail" required>
-				<textarea name="bio" id="bio" cols="30" rows="10" placeholder="Bio"></textarea>
-				<input type="submit" value="Enregistrer">
 			</div>
-		</form>
+
+			<div id="accountEdit">
+				<!--
+				  <div class="col-6">
+						<div id="img-preview"><img id="avatar" src="/images/avatar_default.jpg" /></div>
+						<label for="avatar">Choisissez votre Avatar</label>
+						<input type="file" accept="image/*" name="avatar" id="avatar">
+					</div>
+					-->
+				<div class="col-6">
+					<form id="accountForm" method="post">
+						<input type="text" name="firstname" id="firstname" placeholder="Prénom" required>
+						<input type="text" name="lastname" id="lastname" placeholder="Nom" required>
+						<input type="email" name="email" id="email" placeholder="E-Mail" required>
+						<textarea name="bio" id="bio" cols="30" rows="10" placeholder="Bio"></textarea>
+						<input type="submit" value="Enregistrer">
+					</form>
+				</div>
+			</div>
+
+			<div id="accountRead"></div>
+
+		</div>
 	</div>
 
 	<script src="index.js"></script>
