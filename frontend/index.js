@@ -18,7 +18,8 @@ document.querySelector(".back").addEventListener('click', () => {
 // Config
 //
 
-const apiUrl = 'http://localhost:5000'
+// const apiUrl = 'http://localhost:5000'
+const apiUrl = 'https://bastienrc-apiauth.herokuapp.com'
 console.log('--> URL API')
 console.log(apiUrl)
 
@@ -30,7 +31,6 @@ function isAuth() {
   if (localStorage.getItem('token')) {
     document.getElementById('sign').style.display = 'none'
     document.getElementById('account').style.display = 'flex'
-    updateUser()
   } else {
     document.getElementById('sign').style.display = 'flex'
     document.getElementById('account').style.display = 'none'
@@ -54,29 +54,6 @@ function avatarPreview () {
       fileReader.addEventListener("load", function () {
         imgPreview.style.display = "block"
         img.src = this.result
-      })
-    }
-  })
-}
-
-// Update
-function updateUser () {
-  const userId = localStorage.getItem('userId')
-  const token = localStorage.getItem('token')
-
-  fetch(`${apiUrl}/api/users/${userId}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
-  })
-  .then(response => {
-    console.log(`Status: ${response.status}`)
-    if(response.ok) {
-      response.json().then(data => {
-        document.getElementById("accountForm").email.value = data.email
-        document.getElementById("avatar").src = data.avatarUrl
       })
     }
   })
@@ -210,5 +187,70 @@ btnDelete.addEventListener('click', e => {
       console.log('Utilisateur éffacé');
       isAuth()
     }
+  })
+})
+
+// Update
+const accountForm = document.getElementById("accountForm")
+accountForm.addEventListener('submit', e => {
+  e.preventDefault()
+  console.log('--> AccountForm')
+
+  // Je récupére les entrées
+  let submitAccountForm = {}
+  Array.from(new FormData(accountForm), (entry) => {
+    if (entry[0] === 'avatar') {
+      submitAccountForm[entry[0]] = entry[1].name
+    } else {
+      submitAccountForm[entry[0]] = entry[1]
+    }
+  })
+
+  // Afficher les entrées pour verifier que ca marche !
+  // console.log(submitAccountForm)
+
+  // Je récupére l'userId et le token du localStorage
+  const userId = localStorage.getItem('userId')
+  const token = localStorage.getItem('token')
+
+  // Je mets mon user à jour
+  fetch(`${apiUrl}/api/users/${userId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(submitAccountForm)
+  })
+  .then(response => {
+    console.log(`Status: ${response.status}`)
+    // if(response.ok) {
+    //   console.log(response)
+    //   response.json().then(data => {
+    //     console.log(data.message)
+    //     document.getElementById('message').innerHTML = `<p class="good">${data.message}</p>`
+    //     // On vide les inputs
+    //     // document.getElementById("signUp").email.value = ''
+    //     // document.getElementById("signUp").password.value = ''
+    //     // document.getElementById("signIn").email.value = ''
+    //   })
+    //   .then(response => {
+    //     console.log(`Status: ${response.status}`)
+    //     if(response.ok) {
+    //       response.json().then(data => {
+    //         document.getElementById("accountForm").email.value = data.email
+    //         document.getElementById("avatar").src = data.avatarUrl
+    //       })
+    //     }
+    //   })
+    // } else {
+    //   response.json().then(data => {
+    //     document.getElementById('message').innerHTML = `<p class="bad">${data.error}</p>`
+    //     console.log(data.error.errors)
+    //     if (data.error.errors) {
+    //       document.getElementById('message').innerHTML = `<p class="bad">Cette adresse email existe déjà !</p>`
+    //     }
+    //   })
+    // }
   })
 })
