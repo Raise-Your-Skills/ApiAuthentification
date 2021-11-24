@@ -18,8 +18,8 @@ document.querySelector(".back").addEventListener('click', () => {
 // Config
 //
 
-// const apiUrl = 'http://localhost:5000'
-const apiUrl = 'https://bastienrc-apiauth.herokuapp.com'
+const apiUrl = 'http://localhost:5000'
+// const apiUrl = 'https://bastienrc-apiauth.herokuapp.com'
 console.log('--> URL API')
 console.log(apiUrl)
 
@@ -31,7 +31,7 @@ function isAuth() {
   if (localStorage.getItem('token')) {
     document.getElementById('sign').style.display = 'none'
     document.getElementById('account').style.display = 'flex'
-    account()
+    accountPage('profil')
   } else {
     document.getElementById('sign').style.display = 'flex'
     document.getElementById('account').style.display = 'none'
@@ -61,7 +61,8 @@ function avatarPreview () {
 }
 
 // Account
-function account () {
+function accountPage (page) {
+  document.getElementById('message').innerHTML = ''
   const userId = localStorage.getItem('userId')
   const token = localStorage.getItem('token')
 
@@ -75,20 +76,28 @@ function account () {
   .then(response => {
     console.log(`Status: ${response.status}`)
     if(response.ok) {
-      response.json().then(data => accountReadProfil(data))
+      response.json().then(data => {
+        if (page=== 'profil') {
+          accountReadProfil(data)
+        }
+        if (page=== 'edit') {
+          accountEditProfil(data)
+        }
+      })
     }
   })
 }
 
 function accountReadProfil (objUser) {
-  console.log(objUser)
+  // console.log(objUser)
+  console.log('--> View Profil')
   const avatar = objUser.avatarUrl ? objUser.avatarUrl : "avatar_default.jpg"
   const firstname = objUser.firstname ? objUser.firstname : "No Firstname"
   const lastname = objUser.lastname ? objUser.lastname : "No Lastname"
   const email = objUser.email ? objUser.email : 'No Email'
   const bio = objUser.bio ? objUser.bio : "No Bio"
 
-  document.getElementById('accountRead').innerHTML = `
+  document.getElementById('accountProfil').innerHTML = `
     <div class="col-6">
       <div id="img-preview">
         <img id="avatar" src="./images/${avatar}" />
@@ -103,6 +112,43 @@ function accountReadProfil (objUser) {
       </div>
     </div>
 
+    <div class="col-12" id="footer">
+      <p>ID:${objUser._id} ~ C:${objUser.createdAt} ~ U:${objUser.updatedAt}</p>
+    </div>
+  `
+}
+
+function accountEditProfil (objUser) {
+  console.log('--> Edit Profil')
+  // console.log(objUser)
+  const avatar = objUser.avatarUrl ? objUser.avatarUrl : "avatar_default.jpg"
+  const firstname = objUser.firstname ? objUser.firstname : ""
+  const lastname = objUser.lastname ? objUser.lastname : ""
+  const email = objUser.email ? objUser.email : ''
+  const bio = objUser.bio ? objUser.bio : ""
+
+  // <div class="col-6">
+  // 	<div id="img-preview"><img id="avatar" src="/images/avatar_default.jpg" /></div>
+  // 	<label for="avatar">Choisissez votre Avatar</label>
+  // 	<input type="file" accept="image/*" name="avatar" id="avatar">
+  // </div>
+
+  document.getElementById('accountProfil').innerHTML = `
+    <div class="col-6">
+      <div id="img-preview">
+        <img id="avatar" src="./images/${avatar}" />
+      </div>
+    </div>
+    <div class="col-6">
+      <form id="accountForm" method="post">
+        <input type="text" name="firstname" id="firstname" placeholder="Prénom" value="${firstname}">
+        <input type="text" name="lastname" id="lastname" placeholder="Nom" value="${lastname}">
+        <input type="email" name="email" id="email" placeholder="E-Mail" value="${email}" required>
+        <textarea name="bio" id="bio" cols="30" rows="10" placeholder="Bio">${bio}</textarea>
+        <input type="submit" onClick="updateUser()" value="Enregistrer">
+      </form>
+    </div>
+
     <div class="col-12">
       <div style="font-size:0.6rem;text-align:center;margin:1px;color:#999">
         <p>ID:${objUser._id} ~ C:${objUser.createdAt} ~ U:${objUser.updatedAt}</p>
@@ -111,6 +157,70 @@ function accountReadProfil (objUser) {
   `
 }
 
+// Update
+function updateUser() {
+  const accountForm = document.getElementById("accountForm")
+  accountForm.addEventListener('submit', e => {
+    e.preventDefault()
+    console.log('--> AccountForm')
+
+    // Je récupére les entrées
+    let submitAccountForm = {}
+    Array.from(new FormData(accountForm), (entry) => {
+      if (entry[0] === 'avatar') {
+        submitAccountForm[entry[0]] = entry[1].name
+      } else {
+        submitAccountForm[entry[0]] = entry[1]
+      }
+    })
+
+    // Afficher les entrées pour verifier que ca marche !
+    // console.log(submitAccountForm)
+
+    // Je récupére l'userId et le token du localStorage
+    const userId = localStorage.getItem('userId')
+    const token = localStorage.getItem('token')
+
+    // console.log(`${apiUrl}/api/users/${userId}`)
+
+    // Je mets mon user à jour
+    fetch(`${apiUrl}/api/users/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(submitAccountForm)
+    })
+    .then(response => {
+      console.log(`Status: ${response.status}`)
+      if(response.ok) {
+        isAuth()
+        response.json().then(data => {
+          console.log(data.message)
+          document.getElementById('message').innerHTML = `<p class="good">${data.message}</p>`
+        })
+      } else {
+        response.json().then(data => {
+          // console.log(data.error.errors)
+          document.getElementById('message').innerHTML = ''
+          if (data.error.keyPattern) {
+            document.getElementById('message').innerHTML += `<p class="bad">Cette adresse email existe déjà !</p>`
+          } else if (data.error.errors) {
+            document.getElementById('message')
+              .innerHTML += data.error.errors.lastname
+                ? `<p class="bad">Nom: ${data.error.errors.lastname.message}</p>`
+                : ''
+            document.getElementById('message')
+              .innerHTML += data.error.errors.firstname
+                ? `<p class="bad">Prénom: ${data.error.errors.firstname.message}</p>`
+                : ''
+          }
+      })
+      }
+    })
+  })
+}
 
 //
 // Les events
@@ -236,8 +346,8 @@ btnDelete.addEventListener('click', e => {
     if (response.ok) {
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
-      console.log('Utilisateur éffacé');
       isAuth()
+      document.getElementById('message').innerHTML = `<p class="good">Utilisateur éffacé</p>`
     }
   })
 })
@@ -245,70 +355,5 @@ btnDelete.addEventListener('click', e => {
 // Edit
 const btnEdit = document.getElementById("btnEdit")
 btnEdit.addEventListener('click', e => {
-  document.getElementById('accountEdit').innerHTML = accountEditProfil()
-})
-
-// Update
-const accountForm = document.getElementById("accountForm")
-accountForm.addEventListener('submit', e => {
-  e.preventDefault()
-  console.log('--> AccountForm')
-
-  // Je récupére les entrées
-  let submitAccountForm = {}
-  Array.from(new FormData(accountForm), (entry) => {
-    if (entry[0] === 'avatar') {
-      submitAccountForm[entry[0]] = entry[1].name
-    } else {
-      submitAccountForm[entry[0]] = entry[1]
-    }
-  })
-
-  // Afficher les entrées pour verifier que ca marche !
-  // console.log(submitAccountForm)
-
-  // Je récupére l'userId et le token du localStorage
-  const userId = localStorage.getItem('userId')
-  const token = localStorage.getItem('token')
-
-  // Je mets mon user à jour
-  fetch(`${apiUrl}/api/users/${userId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify(submitAccountForm)
-  })
-  .then(response => {
-    console.log(`Status: ${response.status}`)
-    // if(response.ok) {
-    //   console.log(response)
-    //   response.json().then(data => {
-    //     console.log(data.message)
-    //     document.getElementById('message').innerHTML = `<p class="good">${data.message}</p>`
-    //     // On vide les inputs
-    //     // document.getElementById("signUp").email.value = ''
-    //     // document.getElementById("signUp").password.value = ''
-    //     // document.getElementById("signIn").email.value = ''
-    //   })
-    //   .then(response => {
-    //     console.log(`Status: ${response.status}`)
-    //     if(response.ok) {
-    //       response.json().then(data => {
-    //         document.getElementById("accountForm").email.value = data.email
-    //         document.getElementById("avatar").src = data.avatarUrl
-    //       })
-    //     }
-    //   })
-    // } else {
-    //   response.json().then(data => {
-    //     document.getElementById('message').innerHTML = `<p class="bad">${data.error}</p>`
-    //     console.log(data.error.errors)
-    //     if (data.error.errors) {
-    //       document.getElementById('message').innerHTML = `<p class="bad">Cette adresse email existe déjà !</p>`
-    //     }
-    //   })
-    // }
-  })
+  accountPage('edit')
 })
