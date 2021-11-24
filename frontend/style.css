@@ -316,8 +316,8 @@ input, textarea { width: 100% }
   flex-direction: column;
 }
 
-#account .col-6 { width: 50% }
-#account .col-12 { width: 100% }
+#account .col-6 { width: 50%; margin:0.5rem 0 }
+#account .col-12 { width: 100%; margin:0.5rem 0 }
 
 #account input {
   height: 2rem;
@@ -376,34 +376,29 @@ input, textarea { width: 100% }
 
 }
 
-#accountRead {
+#accountProfil {
 	display: flex;
 	width: 100%;
 	flex-wrap: wrap;
 }
 
-#accountRead #avatar {
+#accountProfil #avatar {
 	padding: 1rem;
 	border-radius: 30px;
 }
 
-#accountRead #info:first-child {
+#accountProfil #info:first-child {
 	padding: 2rem 0;
 }
 
-#accountRead #info p {
+#accountProfil #info p {
 	padding: .5rem 0;
 	color: #17a02d;
 }
 
-#accountRead #info p span {
+#accountProfil #info p span {
 	font-weight: bold;
 	color: #367e42;
-}
-
-
-#accountEdit {
-	display: none;
 }
 
 .btn {
@@ -423,4 +418,10 @@ input, textarea { width: 100% }
 	justify-content: space-between;
 	width: 100%;
 	margin: 1rem 0;
+}
+
+#footer {
+	font-size:0.6rem;
+	text-align:center;
+	color:#999
 }
